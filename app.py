@@ -1,50 +1,56 @@
 import streamlit as st
 import re
 
-# project
-def check_password_strength (password):
+# Function to check password strength
+def check_password_strength(password):
     score = 0
-    feedback=[]
+    feedback = []
+
     if len(password) >= 8:
-     score += 1
+        score += 1
     else:
-     feedback.append("❌Increase the length to at least 8 characters.")
-    if re.search(r'[A-Z]', password) and  re.search(r'[a-z]',password):
-       score += 1
+        feedback.append("❌ Increase the length to at least 8 characters.")
+
+    if re.search(r'[A-Z]', password) and re.search(r'[a-z]', password):
+        score += 1
     else:
-       feedback.append("🔡Include both uppercase and lowercase letters.")
-    if re.search(r'\d',password):
-       score += 1
+        feedback.append("🔡 Include both uppercase and lowercase letters.")
+
+    if re.search(r'\d', password):
+        score += 1
     else:
-       feedback.append("🔢Include at least one digit (0-9).")
-    if re.search(r'[!@#$%^&*]',password):
-       score +=1
+        feedback.append("🔢 Include at least one digit (0-9).")
+
+    if re.search(r'[!@#$%^&*]', password):
+        score += 1
     else:
-       feedback.append("🔣Include at least one special character (!@#$%^&*).")
- # checking password score
-    if score ==4:
-       feedback= ["✅Strong password!🎉"]
+        feedback.append("🔣 Include at least one special character (!@#$%^&*).")
+
+    # Adjust feedback based on the score
+    if score == 4:
+        feedback = ["✅ Strong password! 🎉"]
     elif score == 3:
-       feedback=["⚠️Moderate password. Consider adding missing elements.🔧"]
+        feedback.append("⚠️ Moderate password. Consider adding missing elements. 🔧")
     else:
-        feedback.append("🚨Weak password. Improve by following the suggestions.🔴")
-        return score, feedback
-# input passsword
-  
-   
-    score, feedback = check_password_strength(password)
-    return score, feedback
+        feedback.append("🚨 Weak password. Improve by following the suggestions. 🔴")
+
+    return score, feedback  
+
+# Streamlit UI
 st.title("🔐 Password Strength Checker")
 password = st.text_input("🔑 Enter your password:", type="password")  
 
-if password:  # Jab user kuch enter kare
-    score, feedback = check_password_strength(password)
-    
+if password:
+    score, feedback = check_password_strength(password) 
+
     # Display results
-    st.subheader("💡Password Feedback")
+    st.subheader("💡 Password Feedback")
     for msg in feedback:
-      st.write(msg)
-      st.write("\n📊 **Password Score:**", "⭐" * score, f"({score}/4)")
+        st.write(msg)
+
+    # Display password score
+    st.write("\n📊 **Password Score:**", "⭐" * score, f"({score}/4)")
+
 
 # Auto generate password
 import random
